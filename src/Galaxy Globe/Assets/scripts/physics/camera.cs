@@ -12,13 +12,20 @@ public class camera : MonoBehaviour
     private float currentY = 0.0f;
     private float sensitivityX = 4.0f;
     private float sensitivityY = 1.0f;
+    private Rigidbody Object;
+    private source GravitySource;
     private void Start()
-    {
+    {        
+        Object = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>();
+        GravitySource = GameObject.FindGameObjectWithTag("Gravity Source").GetComponent<source>();
     }
     private void Update()
     {
         currentX += Input.GetAxis("Mouse X") * sensitivityX;
         currentY -= Input.GetAxis("Mouse Y") * sensitivityY;
+        Vector3 rotation = GravitySource.GetRotation(Object);
+        CLAMP_Y_MIN = Vector3.Angle(rotation, new Vector3(0, 1, 0));
+        CLAMP_Y_MAX = CLAMP_Y_MIN + 60.0f;
         currentY = Mathf.Clamp(currentY, CLAMP_Y_MIN, CLAMP_Y_MAX);
     }
     private void LateUpdate()
@@ -27,6 +34,7 @@ public class camera : MonoBehaviour
         Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
         transform.position = lookAt.position + rotation * dir;
         transform.LookAt(lookAt.position);
+        
         lookAt.Rotate(Vector3.up * Input.GetAxis("Mouse X") * sensitivityX);
     }
     //    public float MouseSensitivityX = 250.0f;

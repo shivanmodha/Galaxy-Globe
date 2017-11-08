@@ -19,7 +19,7 @@ public class character : MonoBehaviour
         Vector3 TargetMove = MoveDirection * MoveSpeed;
         MoveAmount = Vector3.SmoothDamp(MoveAmount, TargetMove, ref SmoothVelocity, 0.5f);
         verticalLookRotation -= Input.GetAxisRaw("Vertical");
-        transform.localEulerAngles = (Vector3.left * verticalLookRotation * 2);
+        //transform.localEulerAngles = (Vector3.left * verticalLookRotation * 2);
     }
     private void FixedUpdate()
     {
