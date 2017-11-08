@@ -86,6 +86,7 @@
   <ItemGroup>
     <Compile Include="Assets\scripts\physics\body.cs" />
     <Compile Include="Assets\scripts\physics\camera.cs" />
+    <Compile Include="Assets\scripts\physics\character.cs" />
     <Compile Include="Assets\scripts\physics\source.cs" />
   </ItemGroup>
   <ItemGroup>
