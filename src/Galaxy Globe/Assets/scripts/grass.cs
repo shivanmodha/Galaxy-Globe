@@ -5,31 +5,22 @@ using UnityEngine;
 public class grass : MonoBehaviour
 {
     private Camera camera;
+    private Renderer renderer;
     private void Start()
     {
         camera = Camera.main.transform.GetComponent<Camera>();
-    }
-    private void OnBecameVisible()
-    {
-        enabled = true;
-    }
-    private void OnBecameInvisible()
-    {
-        enabled = false;
+        renderer = GetComponent<Renderer>();
     }
     private void Update()
     {
-        /*if (enabled)
+        /*float distance = Vector3.Distance(camera.transform.position, transform.position);
+        if (distance < 50.0f)
         {
-            float distance = Vector3.Distance(camera.transform.position, transform.position);
-            if (distance < 50.0f)
-            {
-                GetComponent<Renderer>().enabled = true;
-            }
-            else
-            {
-                GetComponent<Renderer>().enabled = false;
-            }
+            //renderer.enabled = true;
+        }
+        else
+        {
+            //renderer.enabled = false;
         }*/
     }
 }

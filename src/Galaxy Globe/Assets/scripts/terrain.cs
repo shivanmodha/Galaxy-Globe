@@ -3,26 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 public class terrain : MonoBehaviour
 {
-    private GameObject[] grass;
-    private Camera camera;
+    private Dictionary<string, GameObject> GrassPatches;
+    private Camera CameraHandle;
+    private string cKey = "NULL";
+    private string oKey = "NULL";
+    private int cX, cY, cZ;
+    private int oX, oY, oZ;
 	void Start ()
     {
-        grass = vegetation.Create();
-        camera = Camera.main.transform.GetComponent<Camera>();
+        GrassPatches = vegetation.Create();
+        CameraHandle = Camera.main.transform.GetComponent<Camera>();
     }
     void Update()
     {
-        /*for (int i = 0; i < grass.Length; i++)
-        {
-            float distance = Vector3.Distance(camera.transform.position, grass[i].transform.position);
-            if (distance < 50.0f)
-            {
-                grass[i].GetComponent<Renderer>().enabled = true;
-            }
-            else
-            {
-                grass[i].GetComponent<Renderer>().enabled = false;
-            }
-        }*/
+        //Debug.Log(CameraHandle.transform.position - new Vector3(0.0f, 128.3f, 0.0f));
+        Vector3 check = CameraHandle.transform.position - new Vector3(0.0f, 1.0f, 0.0f);
     }
 }

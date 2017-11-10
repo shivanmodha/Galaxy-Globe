@@ -2,33 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class camera : MonoBehaviour
+public class character : MonoBehaviour
 {
     public float MouseSensitivityX = 250.0f;
     public float MouseSensitivityY = 250.0f;
     public float MoveSpeed = 6.0f;
-    Transform CameraT;
-    float verticalLookRotation = 0;
-
-    Vector3 moveAmount;
-    Vector3 SmoothVelocity;
-    Rigidbody rigidbody;
+    private Transform CameraTransform;
+    private float LookRotationY = 0;
+    private Vector3 moveAmount;
+    private Vector3 SmoothVelocity;
+    private Rigidbody Body;
     private void Awake()
     {
-        rigidbody = GetComponent<Rigidbody>();
+        Body = GetComponent<Rigidbody>();
     }
     void Start()
     {
-        CameraT = Camera.main.transform;
-        Camera cam = CameraT.GetComponent<Camera>();
-        cam.farClipPlane = 50.0f;
+        CameraTransform = Camera.main.transform;
     }
     void Update()
     {
         transform.Rotate(Vector3.up * Input.GetAxis("Mouse X") * Time.deltaTime * MouseSensitivityX);
-        verticalLookRotation += Input.GetAxis("Mouse Y") * Time.deltaTime * MouseSensitivityY;
-        verticalLookRotation = Mathf.Clamp(verticalLookRotation, -60.0f, 60.0f);
-        CameraT.localEulerAngles = Vector3.left * verticalLookRotation;
+        LookRotationY += Input.GetAxis("Mouse Y") * Time.deltaTime * MouseSensitivityY;
+        LookRotationY = Mathf.Clamp(LookRotationY, -60.0f, 60.0f);
+        CameraTransform.localEulerAngles = Vector3.left * LookRotationY;
 
         Vector3 MoveDirection = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
         Vector3 TargetMove = MoveDirection * MoveSpeed;
@@ -38,6 +35,6 @@ public class camera : MonoBehaviour
     private void FixedUpdate()
     {
         Vector3 LocalSpace = transform.TransformDirection(moveAmount);
-        rigidbody.MovePosition(rigidbody.position + LocalSpace * Time.fixedDeltaTime);
+        Body.MovePosition(Body.position + LocalSpace * Time.fixedDeltaTime);
     }
 }

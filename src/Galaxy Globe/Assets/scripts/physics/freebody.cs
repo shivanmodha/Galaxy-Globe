@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class body : MonoBehaviour
+public class freebody : MonoBehaviour
 {
     source GravitySource;
     Rigidbody RigidBody;
