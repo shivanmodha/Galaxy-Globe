@@ -4,37 +4,50 @@ using UnityEngine;
 
 public class character : MonoBehaviour
 {
-    public float MouseSensitivityX = 250.0f;
-    public float MouseSensitivityY = 250.0f;
-    public float MoveSpeed = 6.0f;
-    private Transform CameraTransform;
+    public float Sensitivity = 250.0f;
+    public float Walk = 6.0f;
+    public float Sprint = 10.0f;
+    public float JumpForce = 220.0f;
+    private Transform Body;
+    private Transform Head;
+    private Transform HeadEntity;
+    private Transform Eyes;
     private float LookRotationY = 0;
     private Vector3 moveAmount;
     private Vector3 SmoothVelocity;
-    private Rigidbody Body;
-    private void Awake()
+    private Rigidbody Character;
+    private bool Grounded = true;
+    private void Start()
     {
-        Body = GetComponent<Rigidbody>();
+        Character = GetComponent<Rigidbody>();
+        Eyes = Camera.main.transform;
+        Body = GameObject.FindGameObjectWithTag("Player Body").GetComponent<Transform>();
+        Head = GameObject.FindGameObjectWithTag("Player Head").GetComponent<Transform>();
+        HeadEntity = GameObject.FindGameObjectWithTag("Player Head Entity").GetComponent<Transform>();
     }
-    void Start()
+    private void Update()
     {
-        CameraTransform = Camera.main.transform;
-    }
-    void Update()
-    {
-        transform.Rotate(Vector3.up * Input.GetAxis("Mouse X") * Time.deltaTime * MouseSensitivityX);
-        LookRotationY += Input.GetAxis("Mouse Y") * Time.deltaTime * MouseSensitivityY;
-        LookRotationY = Mathf.Clamp(LookRotationY, -60.0f, 60.0f);
-        CameraTransform.localEulerAngles = Vector3.left * LookRotationY;
-
-        Vector3 MoveDirection = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
-        Vector3 TargetMove = MoveDirection * MoveSpeed;
-
-        moveAmount = Vector3.SmoothDamp(moveAmount, TargetMove, ref SmoothVelocity, 0.15f);
+        Head.Rotate(Vector3.forward * Input.GetAxis("Mouse X") * Time.deltaTime * Sensitivity);
+        LookRotationY -= Input.GetAxis("Mouse Y") * Time.deltaTime * Sensitivity;
+        LookRotationY = Mathf.Clamp(LookRotationY, -10.0f, 90.0f);
+        HeadEntity.localEulerAngles = Vector3.up * LookRotationY;
+        Vector3 MoveDirection = new Vector3(Input.GetAxisRaw("Vertical"), Input.GetAxisRaw("Horizontal"), 0).normalized;
+        Vector3 TargetMove = MoveDirection * Walk;
+        moveAmount = Vector3.SmoothDamp(moveAmount, TargetMove, ref SmoothVelocity, 0.25f);
+        if (Input.GetButtonDown("Jump"))
+        {
+            if (Grounded)
+            {
+                Character.AddForce(transform.up * JumpForce);
+                //Grounded = false;
+            }
+        }
     }
     private void FixedUpdate()
     {
-        Vector3 LocalSpace = transform.TransformDirection(moveAmount);
-        Body.MovePosition(Body.position + LocalSpace * Time.fixedDeltaTime);
+        Vector3 LocalSpace = Head.TransformDirection(moveAmount);
+        Character.MovePosition(Character.position + LocalSpace * Time.fixedDeltaTime);
+        Vector3 LookDirection = Eyes.TransformDirection(moveAmount);
+        Body.Rotate(LookDirection);
     }
 }
