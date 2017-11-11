@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class vegetation : MonoBehaviour
 {
-    public static void Create()
+    public static void Create(float width, float height, float radius)
     {
-        float width = 2.0f;
-        float height = 2.0f;
         Texture2D grassTextureDiffuse = Resources.Load<Texture2D>("grass_diff");
         for (float i = 0; i < 360.0f / width; i++)
         {
@@ -25,7 +23,7 @@ public class vegetation : MonoBehaviour
                 Renderers[1].materials[0].mainTexture = grassTextureDiffuse;
                 Renderers[2].materials[0].mainTexture = grassTextureDiffuse;
                 float rR = Random.Range(0.0f, 360.0f);
-                grassObject.transform.Translate(new Vector3(0.0f, Random.Range(126.6f, 126.8f), 0.0f));
+                grassObject.transform.Translate(new Vector3(0.0f, Random.Range(radius - 0.5f, radius + 0.25f), 0.0f));
                 grassObject.transform.Rotate(new Vector3(0.0f, Random.Range(0.0f, 360.0f)), 0.0f);
                 grassObject.transform.RotateAround(new Vector3(0, 0, 0), new Vector3(1, 0, 0), i * width);
                 grassObject.transform.RotateAround(new Vector3(0, 0, 0), new Vector3(0, 0, 1), j * height);

@@ -4,14 +4,14 @@ using UnityEngine;
 public class environment : MonoBehaviour
 {
     public Vector3 Rotation = new Vector3(0, 0, 0);
-    private source GravitySource;
+    private terrain World;
     void Start ()
     {
-        GravitySource = GameObject.FindGameObjectWithTag("Gravity Source").GetComponent<source>();
+        World = GameObject.FindGameObjectWithTag("Terrain").GetComponent<terrain>();
     }
 	void Update ()
     {
-        transform.rotation = GravitySource.GetRotation(transform);
+        transform.rotation = World.GetRotation(transform);
         transform.Rotate(Rotation);
     }
 }

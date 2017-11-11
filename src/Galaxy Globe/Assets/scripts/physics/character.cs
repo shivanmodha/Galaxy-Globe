@@ -39,7 +39,7 @@ public class character : MonoBehaviour
             if (Grounded)
             {
                 Character.AddForce(transform.up * JumpForce);
-                //Grounded = false;
+                Grounded = false;
             }
         }
     }
@@ -49,5 +49,13 @@ public class character : MonoBehaviour
         Character.MovePosition(Character.position + LocalSpace * Time.fixedDeltaTime);
         Vector3 LookDirection = Eyes.TransformDirection(moveAmount);
         Body.Rotate(LookDirection);
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        string hitTag = collision.gameObject.tag;
+        if (hitTag == "Terrain" || hitTag == "Player Jump Point")
+        {
+            Grounded = true;
+        }
     }
 }
