@@ -16,7 +16,7 @@ public class character : MonoBehaviour
     private Vector3 moveAmount;
     private Vector3 SmoothVelocity;
     private Rigidbody Character;
-    private bool Grounded = true;
+    private int Grounded = 0;
     private void Start()
     {
         Character = GetComponent<Rigidbody>();
@@ -36,10 +36,10 @@ public class character : MonoBehaviour
         moveAmount = Vector3.SmoothDamp(moveAmount, TargetMove, ref SmoothVelocity, 0.25f);
         if (Input.GetButtonDown("Jump"))
         {
-            if (Grounded)
+            if (Grounded == 0)
             {
                 Character.AddForce(transform.up * JumpForce);
-                Grounded = false;
+                Grounded = 1;
             }
         }
     }
@@ -52,10 +52,25 @@ public class character : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
+        DetectCollision(collision);
+    }
+    private void OnCollisionStay(Collision collision)
+    {
+        DetectCollision(collision);
+    }
+    private void DetectCollision(Collision collision)
+    {
         string hitTag = collision.gameObject.tag;
         if (hitTag == "Terrain" || hitTag == "Player Jump Point")
         {
-            Grounded = true;
+            if (Grounded == 2)
+            {
+                Grounded = 0;
+            }
+            else if (Grounded == 1)
+            {
+                Grounded = 2;
+            }
         }
     }
 }
