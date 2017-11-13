@@ -56,21 +56,22 @@ public class character : MonoBehaviour
     }
     private void OnCollisionStay(Collision collision)
     {
-        DetectCollision(collision);
+        //DetectCollision(collision);
     }
     private void DetectCollision(Collision collision)
     {
         string hitTag = collision.gameObject.tag;
         if (hitTag == "Terrain" || hitTag == "Player Jump Point")
         {
-            if (Grounded == 2)
+            /*if (Grounded == 2)
             {
                 Grounded = 0;
             }
             else if (Grounded == 1)
             {
                 Grounded = 2;
-            }
+            }*/
+            Grounded = 0;
         }
     }
 }
