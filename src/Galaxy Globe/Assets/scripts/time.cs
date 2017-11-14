@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class time : MonoBehaviour
 {
-    public float Time = 0.0f;
     private Light Source;
     private GameObject SourceWrapper;
     private int direction = 3;
@@ -18,14 +17,14 @@ public class time : MonoBehaviour
 	}
 	void Update ()
     {
-        SourceWrapper.transform.Rotate(new Vector3(0.05f, 0.0f, 0.0f));
+        SourceWrapper.transform.Rotate(new Vector3(0.05f * Time.deltaTime, 0.0f, 0.0f));
         Debug.DrawRay(new Vector3(0, 0, 0), SourceWrapper.transform.rotation.eulerAngles);
         if (direction == 0)
         {
-            Source.intensity -= 0.001f;
+            Source.intensity -= 0.001f * Time.deltaTime;
             if (Source.intensity < 0.5f)
             {
-                RenderSettings.fogDensity += 0.0005f;
+                RenderSettings.fogDensity += 0.0005f * Time.deltaTime;
                 if (RenderSettings.fogDensity > 0.1f)
                 {
                     direction = 2;
@@ -43,10 +42,10 @@ public class time : MonoBehaviour
         }
         else if (direction == 1)
         {
-            Source.intensity += 0.001f;
+            Source.intensity += 0.001f * Time.deltaTime;
             if (RenderSettings.fogDensity > 0.0f)
             {
-                RenderSettings.fogDensity -= 0.0005f;
+                RenderSettings.fogDensity -= 0.0005f * Time.deltaTime;
             }
             if (Source.intensity >= 2.0f)
             {

@@ -11,12 +11,14 @@ public class character : MonoBehaviour
     private Transform Body;
     private Transform Head;
     private Transform HeadEntity;
+    private Transform BodyEntity;
     private Transform Eyes;
     private float LookRotationY = 0;
     private Vector3 moveAmount;
     private Vector3 SmoothVelocity;
     private Rigidbody Character;
     private int Grounded = 0;
+    private bool started = false;
     private void Start()
     {
         Character = GetComponent<Rigidbody>();
@@ -24,6 +26,7 @@ public class character : MonoBehaviour
         Body = GameObject.FindGameObjectWithTag("Player Body").GetComponent<Transform>();
         Head = GameObject.FindGameObjectWithTag("Player Head").GetComponent<Transform>();
         HeadEntity = GameObject.FindGameObjectWithTag("Player Head Entity").GetComponent<Transform>();
+        BodyEntity = GameObject.FindGameObjectWithTag("Player Body Entity").GetComponent<Transform>();
     }
     private void Update()
     {
@@ -48,6 +51,7 @@ public class character : MonoBehaviour
         Vector3 LocalSpace = Head.TransformDirection(moveAmount);
         Character.MovePosition(Character.position + LocalSpace * Time.fixedDeltaTime);
         Vector3 LookDirection = Eyes.TransformDirection(moveAmount);
+        Debug.DrawRay(Character.position, LocalSpace);
         Body.Rotate(LookDirection);
     }
     private void OnCollisionEnter(Collision collision)
@@ -61,7 +65,7 @@ public class character : MonoBehaviour
     private void DetectCollision(Collision collision)
     {
         string hitTag = collision.gameObject.tag;
-        if (hitTag == "Terrain" || hitTag == "Player Jump Point")
+        if (hitTag == "Terrain" || hitTag == "Player Jump Point" || hitTag == "Start Plane")
         {
             /*if (Grounded == 2)
             {
@@ -72,6 +76,11 @@ public class character : MonoBehaviour
                 Grounded = 2;
             }*/
             Grounded = 0;
+            if (!started)
+            {
+                GameObject.FindGameObjectWithTag("Start Plane").GetComponent<Renderer>().enabled = false;
+                started = true;
+            }
         }
     }
 }
